@@ -3,19 +3,15 @@ clear; clc;
 
 % Simulate ODE dynamics:
 y0 = [0, 0, 0, 0]; % Initial conditions 
-tspan = linspace(0, 2000, 100);
-[t, y] = ode45(@f1, tspan, y0);
+tspan = linspace(0, 20000, 100);
+[t, y] = ode45(@f, tspan, y0);
 
 % Plot ODE results
 figure; 
 plot(t, y(:, 1), '-', t, y(:, 2), '-',  t, y(:, 3), '-', t, y(:, 4), '-')
 legend({"W", "Y", "U", "C"})
 
-%figure; 
-%plot(t, y(:, 2), '-')
-%legend({"Y"})
-
-function dydt = f1(t, y)
+function dydt = f(t, y)
     % Kinetic parameters:
     g = 0.0004;
     gU = 0.0004;
@@ -26,16 +22,12 @@ function dydt = f1(t, y)
     np = 0.0375;
     nm = 0.5;
     gY = 1;   
-    mY = 0.125;
+    mY = 0.00125;
     
      %Perturbation
-    if (t>1000)
-       mY = 10;
+    if (t>10000)
+       mY = 0.005;
     end
-    %if (t>800)
-    %   mY =0.125;
-    %end
-
 
     % Species:
     W = y(1);
@@ -47,8 +39,6 @@ function dydt = f1(t, y)
     dWdt = mW - (g+gW)*W - np*U*W + (n0+gU)*C;
     
     dYdt = mY*W - (g+gY)*Y;
-    %dYdt = mY*(W+C) - (g+gY)*Y;
-
     dUdt = mU*Y - (g+gU)*U - np*U*W + (n0+gW)*C;
     dCdt = np*U*W - (g+n0+nm+gU+gW)*C;
 
