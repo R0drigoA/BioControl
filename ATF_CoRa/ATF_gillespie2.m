@@ -1,26 +1,24 @@
 %% Guillespie 
 clear; clc;
 
-% Condiciones iniciales
+% Initial conditions
 %    [W, Y, U, C] 
 y0 = [0, 0, 0, 0]; 
-total_time = 2000;
+total_time = 200000;
 
 [t, W, Y, U, C] = gillespie_algorithm(y0, total_time);
 
-% Plot the results for each species separately
+% Plot the results for each species
 figure;
 plot(t, [W; Y; U; C], 'LineWidth', 0.25);
-xlabel("Tiempo")
-ylabel("Concentracion")
+xlim([0 200000]);
 legend({"W", "Y", "U", "C"})
 
+Yss = Y(1:length(Y)/2);
+Yss_p = Y((length(Y)/2)+1 : length(Y));
 
-%figure;
-%plot(t, [Y], 'LineWidth', 0.25);
-%xlabel("Tiempo")
-%ylabel("Concentracion")
-%legend({"Y"})
+Wss = W(1:length(W)/2);
+Wss_p = W((length(W)/2)+1 : length(W));
 
 
 function [t, W, Y, U, C] = gillespie_algorithm(y0, total_time)
@@ -52,7 +50,7 @@ function [t, W, Y, U, C] = gillespie_algorithm(y0, total_time)
     while t < total_time
 
         %Perturbation
-        if (t>1000)
+        if (t>100000)
             mY = 0.5;
         end
 

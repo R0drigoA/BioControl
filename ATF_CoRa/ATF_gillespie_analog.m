@@ -3,7 +3,7 @@ clear; clc;
 % Condiciones iniciales
 %    [W, Y, V, U, C] 
 y0 = [0, 0, 0, 0, 0]; 
-total_time = 2000;
+total_time = 200000;
 
 [t, W, Y, V, U, C] = gillespie_algorithm(y0, total_time);
 
@@ -54,7 +54,7 @@ function [t, W, Y, V, U, C] = gillespie_algorithm(y0, total_time)
     while t < total_time
 
         %Perturbation
-        if (t>1000)
+        if (t>100000)
             mY = 0.5;
         end
 
@@ -63,8 +63,11 @@ function [t, W, Y, V, U, C] = gillespie_algorithm(y0, total_time)
         rates(2) = (g+gW)*W + np*U*W; % rd W
         rates(3) = mY*W;              % rs Y
         rates(4) = (g+gY)*Y;          % rd Y
-        rates(5) = mV*W;              % rs V 
+        
+        % definir W_ss
+        rates(5) = mV*W_ss;              % rs V 
         rates(6) = (g+gV)*V;          % rd V
+        
         rates(7) = mU*V + (n0+gW)*C;  % rs U
         rates(8) = (g+gU)*U + np*U*W; % rd U
         rates(9) = np*U*W;            % rs C
